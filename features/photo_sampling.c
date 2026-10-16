@@ -9,7 +9,22 @@ static const uint32_t native_density = NATIVE_DENSITY;
 static uint32_t selected_density = NATIVE_DENSITY;
 static uint32_t applied_density = NATIVE_DENSITY;
 static unsigned selected_samples = 129;
+static const uint32_t preset_densities[] = {
+    295u,
+    580u,
+    1165u,
+    2316u,
+    4627u,
+    9269u,
+};
+
 static const unsigned char *const accepted_densities[] = {
+    (const unsigned char *)&preset_densities[0],
+    (const unsigned char *)&preset_densities[1],
+    (const unsigned char *)&preset_densities[2],
+    (const unsigned char *)&preset_densities[3],
+    (const unsigned char *)&preset_densities[4],
+    (const unsigned char *)&preset_densities[5],
     (const unsigned char *)&native_density,
     (const unsigned char *)&selected_density,
     (const unsigned char *)&applied_density,

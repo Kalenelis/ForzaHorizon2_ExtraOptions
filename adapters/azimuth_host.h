@@ -14,7 +14,7 @@ typedef struct {
     unsigned patch_count;
 } HostPatchSet;
 
-typedef enum { AZIMUTH_UNKNOWN, AZIMUTH_096, AZIMUTH_097, AZIMUTH_098, AZIMUTH_099 } AzimuthBuild;
+typedef enum { AZIMUTH_UNKNOWN, AZIMUTH_096, AZIMUTH_097, AZIMUTH_098, AZIMUTH_099, AZIMUTH_0910 } AzimuthBuild;
 
 AzimuthBuild azimuth_host_build(const unsigned char *base);
 

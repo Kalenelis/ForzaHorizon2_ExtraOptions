@@ -1,0 +1,14 @@
+*.obj
+*.lib
+*.dll
+*.exp
+*.exe
+__pycache__/
+*.pyc
+.vs/
+.idea/
+.vscode/
+build/
+dist/
+temp/
+zig-*/

@@ -1,0 +1,10 @@
+LIBRARY dxgi.dll
+EXPORTS
+    CreateDXGIFactory
+    CreateDXGIFactory1
+    CreateDXGIFactory2
+    DXGIDeclareAdapterRemovalSupport
+    DXGIDumpLiveObjects
+    DXGIGetDebugInterface1
+    DXGIReportAdapterConfiguration
+    Fh2TweaksStatus

@@ -42,13 +42,18 @@ The Lotus Exige, for example, will have its roof floating above the car. It's be
 
 The installation is different depending on the translation layer you're using.
 
-### Azimuth:
+### Azimuth (v0.9.10 and newer):
 
- - Extract all the 3 files from the "Azimuth" folder in this ZIP to "Azimuth\data\bin" and make sure to replace the existing DLL when prompted to.
+ - Place `dxgi.dll`, `FH2_ExtraOptions.ini`, and `Gamerpic.png` in the **root directory of Azimuth** (directly beside `azimuth.exe`).
+ - **Important:** Do **NOT** replace any files inside `Azimuth\data\bin`. Azimuth 0.9.10 introduces SHA-256 integrity checks on its internal files. The new loader uses clean DirectX proxying via `dxgi.dll`.
+
+### Azimuth (v0.9.9 and older legacy):
+
+ - Extract files into `Azimuth\data\bin`, replacing `azimuth-tls.dll`.
 
 ### Mezcal:
 
- - Extract all the 3 files from the "Mezcal" folder in this ZIP to "Forza Horizon 2\Mount" which is where "forza_durango_release_final.exe" is located.
+ - Extract files into `Forza Horizon 2\Mount` where `forza_durango_release_final.exe` is located (the mod is loaded as `xg.dll`).
 
 # Custom gamerpic 
  - You can edit the "Gamerpic.png" image located where you extracted the mod files to with any image you like and it will be used as your avatar in-game.

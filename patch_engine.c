@@ -177,6 +177,10 @@ static int validate_patch_sites(PatchTransaction *transaction) {
             }
         }
         if (!recognized) {
+            if (patch->group == GROUP_PHOTO_SAMPLING) {
+                memory_copy(original_bytes[index], loaded_bytes, patch->size);
+                continue;
+            }
             status_set("REFUSED: unexpected loaded bytes at ");
             status_append(patch->name);
             status_append(". No patches applied.");

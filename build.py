@@ -136,13 +136,12 @@ def build(compiler, output, directory, options):
         "/nodefaultlib",
         "/dynamicbase",
         "/nxcompat",
+        "/def:" + str(SOURCE / "dxgi.def"),
         "/out:" + str(output),
         "/implib:" + str(directory / "extra_options.lib"),
         *objects,
         str(import_library),
     ]
-    if options.azimuth:
-        link_arguments.append("/include:_tls_used")
     subprocess.run(link_arguments, check=True)
 
 
@@ -152,7 +151,7 @@ def main():
     filename = (
         "fh2-extra-options-test.dll"
         if options.test
-        else "azimuth-tls.dll" if options.azimuth else "xg.dll"
+        else "dxgi.dll" if options.azimuth else "xg.dll"
     )
     output = (options.output or SOURCE.parent / filename).resolve()
     if options.build_dir:

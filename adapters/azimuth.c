@@ -67,6 +67,14 @@ static int azimuth_image_is_complete(unsigned char *base) {
     return 1;
 }
 
+static int azimuth_image_is_ready(const unsigned char *base) {
+    uint32_t code = 0;
+    if (!memory_read(base + 0xf18058u, &code, sizeof(code))) {
+        return 0;
+    }
+    return code == 0x28ec8348u;
+}
+
 static unsigned char *azimuth_find_game_image(void) {
     SYSTEM_INFO info;
     GetSystemInfo(&info);
@@ -81,9 +89,8 @@ static unsigned char *azimuth_find_game_image(void) {
         if (m.BaseAddress == m.AllocationBase && (m.Type == MEM_PRIVATE || m.Type == MEM_IMAGE) &&
             azimuth_region_is_readable(&m) && m.RegionSize >= sizeof(IMAGE_DOS_HEADER) &&
             azimuth_has_game_headers(m.AllocationBase)) {
-            if (!azimuth_image_is_complete(m.AllocationBase)) {
-                status_set("REFUSED: mapped FH2 image is incomplete or inaccessible. "
-                           "No patches applied.");
+            if (!azimuth_image_is_complete(m.AllocationBase) ||
+                !azimuth_image_is_ready(m.AllocationBase)) {
                 return 0;
             }
             if (found) {
@@ -187,30 +194,29 @@ path_error:
     return 0;
 }
 
-static void azimuth_initialize(HINSTANCE instance) {
-    if (!azimuth_resolve_game_paths(instance)) {
-        return;
-    }
-    unsigned char *base = azimuth_find_game_image();
-    if (!base) {
-        ModOptions options;
-        settings_defaults(&options);
-        log_start(mod_directory, &options);
-        return;
-    }
-    if (runtime_initialize(base, exe_path, mod_directory)) {
-        char message[] = "AZIMUTH: mapped FH2 image at 0x0000000000000000; native "
-                         "TLS helper preserved.\r\n";
-        const char digits[] = "0123456789abcdef";
-        uintptr_t value = (uintptr_t)base;
-        for (unsigned i = 0; i < 16; ++i) {
-            message[sizeof("AZIMUTH: mapped FH2 image at 0x") - 1 + i] =
-                digits[(value >> (60 - 4 * i)) & 15];
+static DWORD WINAPI azimuth_async_worker(LPVOID param) {
+    HINSTANCE instance = (HINSTANCE)param;
+    for (;;) {
+        Sleep(250);
+        unsigned char *base = azimuth_find_game_image();
+        if (base) {
+            if (azimuth_resolve_game_paths(instance)) {
+                if (runtime_initialize(base, exe_path, mod_directory)) {
+                    char message[] = "AZIMUTH (DXGI PROXY): mapped FH2 image at 0x0000000000000000; patches applied.\r\n";
+                    const char digits[] = "0123456789abcdef";
+                    uintptr_t value = (uintptr_t)base;
+                    for (unsigned i = 0; i < 16; ++i) {
+                        message[sizeof("AZIMUTH (DXGI PROXY): mapped FH2 image at 0x") - 1 + i] =
+                            digits[(value >> (60 - 4 * i)) & 15];
+                    }
+                    log_set_directory(mod_directory);
+                    log_append(message);
+                    break;
+                }
+            }
         }
-        /* Log even when no dynamic callback options were selected. */
-        log_set_directory(mod_directory);
-        log_append(message);
     }
+    return 0;
 }
 #endif
 #ifdef FH2_TWEAKS_TEST
@@ -222,10 +228,10 @@ __declspec(dllexport) void *Fh2TestFindAzimuthImage(void) {
 void adapter_process_attach(HINSTANCE instance) {
     azimuth_tls_attached = GetCurrentThreadId();
 #ifndef FH2_TWEAKS_TEST
-    azimuth_initialize(instance);
-#ifdef FH2_AZIMUTH_DIAGNOSTIC
-    ExitProcess(status_get()[0] == 'O' || status_get()[0] == 'D' ? 0 : 1);
-#endif
+    HANDLE thread = CreateThread(NULL, 0, azimuth_async_worker, (LPVOID)instance, 0, NULL);
+    if (thread) {
+        CloseHandle(thread);
+    }
 #else
     (void)instance;
 #endif

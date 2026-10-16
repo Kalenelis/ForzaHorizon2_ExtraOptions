@@ -2,37 +2,42 @@ LIBRARY KERNEL32.dll
 EXPORTS
     CloseHandle
     CreateFileW
+    CreateThread
+    DeleteFileW
+    DisableThreadLibraryCalls
+    ExitProcess
+    FindClose
+    FindFirstFileW
+    FindNextFileW
+    FlushFileBuffers
     FlushInstructionCache
+    FreeLibrary
     GetCurrentProcess
+    GetCurrentProcessId
+    GetCurrentThreadId
+    GetFileAttributesW
     GetFileSizeEx
     GetLastError
     GetModuleFileNameW
-    GetModuleHandleW
     GetModuleHandleExW
-    GetSystemInfo
-    ReadFile
-    SetLastError
-    VirtualProtect
-    WriteFile
-    ReadProcessMemory
-    VirtualQuery
-    GetCurrentThreadId
-    GetCurrentProcessId
+    GetModuleHandleW
     GetFullPathNameW
     GetPrivateProfileStringW
-    ExitProcess
+    GetProcAddress
     GetProcessHeap
+    GetSystemDirectoryW
+    GetSystemInfo
+    GetTickCount64
     HeapAlloc
     HeapFree
     LoadLibraryExW
-    GetProcAddress
-    WideCharToMultiByte
-    FreeLibrary
-    GetFileAttributesW
-    FindFirstFileW
-    FindNextFileW
-    FindClose
-    FlushFileBuffers
+    LoadLibraryW
     MoveFileExW
-    DeleteFileW
-    GetTickCount64
+    ReadFile
+    ReadProcessMemory
+    SetLastError
+    Sleep
+    VirtualProtect
+    VirtualQuery
+    WideCharToMultiByte
+    WriteFile
