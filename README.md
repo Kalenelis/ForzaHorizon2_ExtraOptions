@@ -47,14 +47,6 @@ The installation is different depending on the translation layer you're using.
  - Place `dxgi.dll`, `FH2_ExtraOptions.ini`, and `Gamerpic.png` in the **root directory of Azimuth** (directly beside `azimuth.exe`).
  - **Important:** Do **NOT** replace any files inside `Azimuth\data\bin`. Azimuth 0.9.10 introduces SHA-256 integrity checks on its internal files. The new loader uses clean DirectX proxying via `dxgi.dll`.
 
-### Azimuth (v0.9.9 and older legacy):
-
- - Extract files into `Azimuth\data\bin`, replacing `azimuth-tls.dll`.
-
-### Mezcal:
-
- - Extract files into `Forza Horizon 2\Mount` where `forza_durango_release_final.exe` is located (the mod is loaded as `xg.dll`).
-
 # Custom gamerpic 
  - You can edit the "Gamerpic.png" image located where you extracted the mod files to with any image you like and it will be used as your avatar in-game.
  - The maximum dimensions supported are 2048x2048 and the image must weight less than 16 megabytes.
